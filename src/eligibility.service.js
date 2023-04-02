@@ -12,7 +12,7 @@ class EligibilityService {
     
     for (let [key, value] of criteriaArray) {
       let valueInCart = getValueInNestedObjects(key, cart);
-      if (valueInCart == undefined) {
+      if (valueInCart === undefined) {
         return false;
       }
       if (isObject(value)) {
