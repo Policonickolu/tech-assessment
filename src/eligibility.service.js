@@ -12,13 +12,21 @@ class EligibilityService {
     
     for (let [key, value] of criteriaArray) {
       let valueInCart = getValueInNestedObjects(key, cart);
-  
+      if (valueInCart == undefined) {
+        return false;
+      }
       if (isObject(value)) {
         if (!applyCriteria(valueInCart, value)) {
           return false;
         }
-      } else if (valueInCart !== value) {
-        return false;
+      } else if (Array.isArray(valueInCart)) {
+          if (!valueInCart.includes(value)) {
+            return false;
+          }
+      } else {
+        if (valueInCart != value) {
+          return false;
+        }
       }
     } 
     return true;
@@ -47,7 +55,10 @@ function applyCriteria(value, criteria) {
     case 'lte':
       return value <= criteriaValue;
     case 'in':
-      return value.some(val => criteriaValue.includes(val));
+      if (Array.isArray(value)) {
+        return [...value].some(val => criteriaValue.includes(val));
+      }
+      return criteriaValue.includes(value);
     case 'and':
       return andModifier(value, criteriaValue);
     case 'or':
