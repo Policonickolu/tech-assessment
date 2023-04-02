@@ -56,7 +56,7 @@ function applyCriteria(value, criteria) {
       return value <= criteriaValue;
     case 'in':
       if (Array.isArray(value)) {
-        return [...value].some(val => criteriaValue.includes(val));
+        return value.some(val => criteriaValue.includes(val));
       }
       return criteriaValue.includes(value);
     case 'and':
